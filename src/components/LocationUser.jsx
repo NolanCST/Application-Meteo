@@ -22,6 +22,8 @@ const LocationComponent = () => {
 
    return (
       <div>
+         Vos coordonnees :
+         <br />
          Latitude: {latitude}
          <br />
          Longitude: {longitude}

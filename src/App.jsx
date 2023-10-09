@@ -36,8 +36,8 @@ function App() {
       <>
          <h1>La meteo de Nono</h1>
          <div>
-            <input onChange={handleInputLat} type="text" placeholder="latitude" />
-            <input onChange={handleInputLong} type="text" placeholder="longitude" />
+            <input onChange={handleInputLat} type="number" placeholder="latitude" max="90" min="-90" />
+            <input onChange={handleInputLong} type="number" placeholder="longitude" max="180" min="-180" />
             <button onClick={getMeteo}>Rechercher</button>
             {renderMeteo()}
          </div>
