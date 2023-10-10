@@ -5,7 +5,7 @@ import LocationUser from "./components/LocationUser/LocationUser";
 
 function App() {
    const [meteo, setMeteo] = useState([]);
-   const [localisation, setLocalisation] = useState({});
+   const [city, setCity] = useState("");
    const [lat, setLat] = useState("");
    const [long, setLong] = useState("");
    const [showDataUser, setShowDataUser] = useState(false);
@@ -20,29 +20,37 @@ function App() {
       setMeteo([]);
    };
 
-   const handleInputLat = (e) => {
-      setLat(e.target.value);
-   };
-
-   const handleInputLong = (e) => {
-      setLong(e.target.value);
+   const handleInputCity = (e) => {
+      setCity(e.target.value);
    };
 
    const getMeteo = async () => {
-      const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?id=524901&lang=fr&lat=${lat}&lon=${long}&appid=282885f571a4a2f45b3c08ff172d69d1&units=metric`);
-      const data = await response.json();
-      console.log(data);
-      setMeteo(data.list);
-      console.log(data.list);
-      setLocalisation(data.city);
-      console.log(data.city);
+      let response;
+      if (showDataUser === false) {
+         response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?id=524901&lang=fr&lat=${lat}&lon=${long}&appid=282885f571a4a2f45b3c08ff172d69d1&units=metric`);
+         const data = await response.json();
+         setMeteo(data.list);
+      } else {
+         response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&lang=fr&appid=282885f571a4a2f45b3c08ff172d69d1&units=metric`);
+         const data = await response.json();
+         setMeteo(data.list);
+      }
    };
+   console.log(meteo);
 
    const renderMeteo = () => {
       return meteo?.map((element, index) => {
          return (
             <div key={index}>
-               <RenderMeteo hour={element.dt_txt} tempMin={element.main.temp_min} tempMax={element.main.temp_max} speedWind={element.wind.speed} description={element.weather[0].description} icon={element.weather[0].icon} />
+               <RenderMeteo
+                  hour={element.dt_txt}
+                  tempMin={element.main.temp_min}
+                  tempMax={element.main.temp_max}
+                  speedWind={element.wind.speed}
+                  humidity={element.main.humidity}
+                  description={element.weather[0].description}
+                  icon={element.weather[0].icon}
+               />
             </div>
          );
       });
@@ -50,21 +58,31 @@ function App() {
 
    return (
       <>
-         <h1>La meteo de Nono</h1>
-         <div>
-            <button onClick={toggleShowDataUser}>{showDataUser ? "Votre position actuelle" : "Choisir les coordonnees"}</button>
-            {showDataUser ? (
-               <>
-                  <input onChange={handleInputLat} className="latitudeInput" type="number" placeholder="latitude" max="90" min="-90" />
-                  <input onChange={handleInputLong} className="longitudeInput" type="number" placeholder="longitude" max="180" min="-180" />
-               </>
-            ) : (
-               <LocationUser onLocationChange={handleLocationChange} />
-            )}
-            <button onClick={getMeteo}>Rechercher</button>
-            <h3>{localisation.name}</h3>
-            {renderMeteo()}
+         <h1 className="title">La meteo de Nono</h1>
+         <div className="card">
+            <div className="search">
+               <button onClick={toggleShowDataUser}>
+                  <img src="images/change.png" />
+               </button>
+               {showDataUser ? (
+                  <>
+                     <input onChange={handleInputCity} type="text" placeholder="Entrer la ville" spellCheck="false" />
+                     <button onClick={getMeteo}>
+                        <img src="images/search.png" />
+                     </button>
+                  </>
+               ) : (
+                  <>
+                     <LocationUser onLocationChange={handleLocationChange} />
+                     <input type="text" placeholder="Votre position actuelle" spellCheck="false" readonly="readonly" />
+                     <button onClick={getMeteo}>
+                        <img src="images/search.png" />
+                     </button>
+                  </>
+               )}
+            </div>
          </div>
+         {renderMeteo()}
       </>
    );
 }

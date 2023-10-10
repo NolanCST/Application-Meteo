@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const LocationUser = ({ onLocationChange }) => {
    const [latitude, setLatitude] = useState(null);
@@ -23,14 +23,7 @@ const LocationUser = ({ onLocationChange }) => {
       }
    }, [onLocationChange]);
 
-   return (
-      <div>
-         Vos coordonnees :
-         <br />
-         {latitude && <div>Latitude: {latitude}</div>}
-         {longitude && <div>Longitude: {longitude}</div>}
-      </div>
-   );
+   return;
 };
 
 export default LocationUser;
