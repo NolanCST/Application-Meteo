@@ -36,7 +36,6 @@ function App() {
          setMeteo(data.list);
       }
    };
-   console.log(meteo);
 
    const renderMeteo = () => {
       return meteo?.map((element, index) => {
@@ -58,7 +57,7 @@ function App() {
 
    return (
       <>
-         <h1 className="title">La meteo de Nono</h1>
+         <h1 className="title">La météo de Nono</h1>
          <div className="card">
             <div className="search">
                <button onClick={toggleShowDataUser}>
@@ -74,7 +73,7 @@ function App() {
                ) : (
                   <>
                      <LocationUser onLocationChange={handleLocationChange} />
-                     <input type="text" placeholder="Votre position actuelle" spellCheck="false" readonly="readonly" />
+                     <input type="text" placeholder="Votre position actuelle" spellCheck="false" readOnly="readonly" />
                      <button onClick={getMeteo}>
                         <img src="images/search.png" />
                      </button>
