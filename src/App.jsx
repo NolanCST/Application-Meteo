@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
-import RenderMeteo from "./components/RenderMeteo";
-import LocationUser from "./components/LocationUser";
+import RenderMeteo from "./components/RenderMeteo/RenderMeteo";
+import LocationUser from "./components/LocationUser/LocationUser";
 
 function App() {
    const [meteo, setMeteo] = useState([]);
@@ -51,8 +51,8 @@ function App() {
             <button onClick={toggleShowDataUser}>{showDataUser ? "Votre position actuelle" : "Choisir les coordonnees"}</button>
             {showDataUser ? (
                <>
-                  <input onChange={handleInputLat} type="number" placeholder="latitude" max="90" min="-90" />
-                  <input onChange={handleInputLong} type="number" placeholder="longitude" max="180" min="-180" />
+                  <input onChange={handleInputLat} className="latitudeInput" type="number" placeholder="latitude" max="90" min="-90" />
+                  <input onChange={handleInputLong} className="longitudeInput" type="number" placeholder="longitude" max="180" min="-180" />
                </>
             ) : (
                <LocationUser onLocationChange={handleLocationChange} />
