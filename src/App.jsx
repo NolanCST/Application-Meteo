@@ -1,11 +1,23 @@
 import { useState } from "react";
 import "./App.css";
 import RenderMeteo from "./components/RenderMeteo";
+import LocationUser from "./components/LocationUser";
 
 function App() {
    const [meteo, setMeteo] = useState([]);
    const [lat, setLat] = useState("");
    const [long, setLong] = useState("");
+   const [showDataUser, setShowDataUser] = useState(false);
+
+   const handleLocationChange = (latitude, longitude) => {
+      setLat(latitude);
+      setLong(longitude);
+   };
+
+   const toggleShowDataUser = () => {
+      setShowDataUser(!showDataUser);
+      setMeteo([]);
+   };
 
    const handleInputLat = (e) => {
       setLat(e.target.value);
@@ -36,8 +48,15 @@ function App() {
       <>
          <h1>La meteo de Nono</h1>
          <div>
-            <input onChange={handleInputLat} type="number" placeholder="latitude" max="90" min="-90" />
-            <input onChange={handleInputLong} type="number" placeholder="longitude" max="180" min="-180" />
+            <button onClick={toggleShowDataUser}>{showDataUser ? "Votre position actuelle" : "Choisir les coordonnees"}</button>
+            {showDataUser ? (
+               <>
+                  <input onChange={handleInputLat} type="number" placeholder="latitude" max="90" min="-90" />
+                  <input onChange={handleInputLong} type="number" placeholder="longitude" max="180" min="-180" />
+               </>
+            ) : (
+               <LocationUser onLocationChange={handleLocationChange} />
+            )}
             <button onClick={getMeteo}>Rechercher</button>
             {renderMeteo()}
          </div>

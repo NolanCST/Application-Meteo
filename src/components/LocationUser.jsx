@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const LocationComponent = () => {
+const LocationUser = ({ onLocationChange }) => {
    const [latitude, setLatitude] = useState(null);
    const [longitude, setLongitude] = useState(null);
 
@@ -8,8 +8,11 @@ const LocationComponent = () => {
       if (navigator.geolocation) {
          navigator.geolocation.getCurrentPosition(
             (position) => {
-               setLatitude(position.coords.latitude);
-               setLongitude(position.coords.longitude);
+               const userLatitude = position.coords.latitude;
+               const userLongitude = position.coords.longitude;
+               setLatitude(userLatitude);
+               setLongitude(userLongitude);
+               onLocationChange(userLatitude, userLongitude);
             },
             (error) => {
                console.error(error);
@@ -18,17 +21,16 @@ const LocationComponent = () => {
       } else {
          console.error("Geolocation is not supported by this browser.");
       }
-   }, []);
+   }, [onLocationChange]);
 
    return (
       <div>
          Vos coordonnees :
          <br />
-         Latitude: {latitude}
-         <br />
-         Longitude: {longitude}
+         {latitude && <div>Latitude: {latitude}</div>}
+         {longitude && <div>Longitude: {longitude}</div>}
       </div>
    );
 };
 
-export default LocationComponent;
+export default LocationUser;
