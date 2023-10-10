@@ -5,6 +5,7 @@ import LocationUser from "./components/LocationUser/LocationUser";
 
 function App() {
    const [meteo, setMeteo] = useState([]);
+   const [localisation, setLocalisation] = useState({});
    const [lat, setLat] = useState("");
    const [long, setLong] = useState("");
    const [showDataUser, setShowDataUser] = useState(false);
@@ -30,8 +31,11 @@ function App() {
    const getMeteo = async () => {
       const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?id=524901&lang=fr&lat=${lat}&lon=${long}&appid=282885f571a4a2f45b3c08ff172d69d1&units=metric`);
       const data = await response.json();
-      console.log(data.list);
+      console.log(data);
       setMeteo(data.list);
+      console.log(data.list);
+      setLocalisation(data.city);
+      console.log(data.city);
    };
 
    const renderMeteo = () => {
@@ -58,6 +62,7 @@ function App() {
                <LocationUser onLocationChange={handleLocationChange} />
             )}
             <button onClick={getMeteo}>Rechercher</button>
+            <h3>{localisation.name}</h3>
             {renderMeteo()}
          </div>
       </>
